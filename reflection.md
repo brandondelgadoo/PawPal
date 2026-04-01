@@ -5,7 +5,22 @@
 **a. Initial design**
 
 - Briefly describe your initial UML design.
+
+    My initial UML design focused on the main things a pet owner needs to do in PawPal+. First, the user should be able to enter and manage owner and pet information so the app knows who the plan is for and what kinds of care matter. Second, the user should be able to add and update pet care tasks such as walks, feeding, medication, grooming, or enrichment, including how long each task takes and how important it is. Third, the user should be able to generate and review a daily plan that selects the most important tasks based on available time, priorities, and preferences, and explains why those tasks were chosen.
+
 - What classes did you include, and what responsibilities did you assign to each?
+
+    I am designing a pet care app with four core classes: `Owner`, `Pet`, `CareTask`, and `Scheduler`.
+
+    `Owner` holds attributes like name, available time, and care preferences. Its methods might include updating preferences or providing the total time available for planning.
+
+    `Pet` holds attributes like name, species, age, and any special needs or notes. Its methods might include returning a summary of the pet's profile or listing care needs that affect scheduling.
+
+    `CareTask` holds attributes like title, category, duration, priority, frequency, and whether the task is required. Its methods might include checking whether the task fits in the available time, updating task details, or returning a readable description for the schedule.
+
+    `Scheduler` holds the scheduling rules or references to the owner, pet, and available tasks. Its methods might include ranking tasks, filtering tasks based on constraints, generating the day's plan, and explaining the reasoning behind the final schedule.
+
+    I reviewed the diagram to keep the relationships simple and logical. For example, an `Owner` can have one or more `Pet` objects, each `Pet` can have multiple `CareTask` objects, and the `Scheduler` uses that information to build the day's plan. I left out extra classes for now so the design stays focused on the core scheduling system and does not become more complex than the project needs.
 
 **b. Design changes**
 
