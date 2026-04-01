@@ -58,12 +58,22 @@
 **a. How you used AI**
 
 - How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
+
+    I used VS Code Copilot throughout the project for design brainstorming, creating class skeletons, refining methods, and checking how to connect my backend logic to the Streamlit UI. Copilot was especially helpful when I was turning the UML into dataclasses and when I was adding new scheduler behaviors like sorting, filtering, recurrence, and conflict detection. I also used it to help think through how session state should work in Streamlit and how to organize my tests.
+
 - What kinds of prompts or questions were most helpful?
+
+    The most helpful prompts were specific and tied to the codebase. For example, prompts like "Based on my skeletons in #file:pawpal_system.py, how should the Scheduler retrieve all tasks from the Owner's pets?" or "What are the most important edge cases to test for a pet scheduler with sorting and recurring tasks?" gave better results than general prompts. Asking focused questions about one feature at a time made the AI much more useful.
 
 **b. Judgment and verification**
 
 - Describe one moment where you did not accept an AI suggestion as-is.
+
+    One moment where I did not accept an AI suggestion as-is was when the design risked becoming more complicated than the project needed. I chose to keep the system centered on four main classes instead of adding extra objects just because they were technically possible. I also kept conflict detection lightweight by only checking exact matching times instead of building a more advanced overlap engine.
+
 - How did you evaluate or verify what the AI suggested?
+
+    I evaluated AI suggestions by comparing them to the project requirements, checking whether they still matched my UML design, and testing whether the code stayed readable. If a suggestion felt more "Pythonic" but made the system harder to understand, I preferred the simpler version. I also verified suggestions by running the demo script, checking Streamlit behavior, and running pytest tests after important changes.
 
 ---
 
@@ -72,12 +82,22 @@
 **a. What you tested**
 
 - What behaviors did you test?
+
+    I tested several core behaviors in the backend logic. My tests verify that marking a task complete changes its status, adding a task to a pet increases that pet's task count, sorting returns tasks in chronological order, completing a daily task creates a new task for the following day, and conflict detection returns a warning when two tasks are scheduled for the same time.
+
 - Why were these tests important?
+
+    These tests were important because they covered the scheduler features that most directly affect whether the app is useful and trustworthy. If task completion, recurrence, sorting, or conflict warnings fail, the daily plan could become confusing or inaccurate for the pet owner.
 
 **b. Confidence**
 
 - How confident are you that your scheduler works correctly?
+
+    I am fairly confident that my scheduler works correctly for the main scenarios I implemented. The core features all passed automated tests, and I also checked the behavior through the demo script and Streamlit interface. I would rate my confidence as 4 out of 5 because the main workflow is working, but there are still some simplifications in the logic.
+
 - What edge cases would you test next if you had more time?
+
+    If I had more time, I would test edge cases such as an owner with no pets, a pet with no tasks, non-recurring tasks that should not generate a follow-up task, multiple overlapping tasks with different durations, and invalid time input formats. I would also test more cases where future recurring tasks should be hidden from today's plan until their due date arrives.
 
 ---
 
@@ -87,10 +107,16 @@
 
 - What part of this project are you most satisfied with?
 
+    I am most satisfied with how the system stayed organized as it grew. Starting with the UML and then building a matching logic layer made it much easier to add features like sorting, filtering, recurring tasks, and conflict detection without losing track of the overall design.
+
 **b. What you would improve**
 
 - If you had another iteration, what would you improve or redesign?
 
+    If I had another iteration, I would improve the scheduler so it could detect overlapping task durations instead of only exact matching times. I would also improve persistence so the app could save data across full browser refreshes or app restarts instead of only storing it in Streamlit session state.
+
 **c. Key takeaway**
 
 - What is one important thing you learned about designing systems or working with AI on this project?
+
+    One important thing I learned is that using AI effectively still requires me to act as the lead architect. Copilot was very helpful for generating code, suggesting tests, and explaining patterns, but I had to decide what belonged in the design, what was too complex, and which suggestions actually fit the project goals. Using separate chat sessions for different phases also helped me stay organized because each session had a clearer purpose, such as design, implementation, testing, or reflection, instead of mixing everything together.

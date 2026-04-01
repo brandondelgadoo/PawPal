@@ -41,6 +41,7 @@ def initialize_session_state() -> None:
 
 initialize_session_state()
 owner = st.session_state.owner
+scheduler = Scheduler(owner)
 
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
 
@@ -173,23 +174,62 @@ else:
 
 all_tasks = [
     {
-        "pet": pet.name,
+        "pet": owner.get_pet_name_for_task(task),
         "title": task.title,
         "category": task.category,
         "duration": task.duration,
         "time": task.time,
+        "due_date": task.due_date.isoformat(),
         "priority": task.priority,
         "frequency": task.frequency,
         "required": task.required,
         "completed": task.completed,
     }
-    for pet in owner.pets
-    for task in pet.care_tasks
+    for task in scheduler.sort_by_time(owner.get_all_tasks_including_completed())
 ]
 
 if all_tasks:
-    st.write("Current tasks:")
+    st.write("All tasks, sorted by time:")
     st.table(all_tasks)
+
+    st.markdown("### Filtered task view")
+    filter_pet_options = ["All pets"] + pet_options
+    selected_filter_pet = st.selectbox("Filter by pet", filter_pet_options)
+    status_filter = st.selectbox("Filter by status", ["All", "Pending", "Completed"])
+
+    filtered_tasks = scheduler.filter_tasks(
+        pet_name=None if selected_filter_pet == "All pets" else selected_filter_pet,
+        completed=(
+            None
+            if status_filter == "All"
+            else status_filter == "Completed"
+        ),
+    )
+
+    filtered_task_rows = [
+        {
+            "pet": owner.get_pet_name_for_task(task),
+            "title": task.title,
+            "time": task.time,
+            "due_date": task.due_date.isoformat(),
+            "priority": task.priority,
+            "completed": task.completed,
+        }
+        for task in scheduler.sort_by_time(filtered_tasks)
+    ]
+
+    if filtered_task_rows:
+        st.table(filtered_task_rows)
+    else:
+        st.info("No tasks match the current filters.")
+
+    conflict_warnings = scheduler.detect_conflicts()
+    if conflict_warnings:
+        st.markdown("### Schedule warnings")
+        for warning in conflict_warnings:
+            st.warning(warning)
+    else:
+        st.success("No task conflicts detected for today's pending tasks.")
 
 st.divider()
 
@@ -197,7 +237,6 @@ st.subheader("Build Schedule")
 st.caption("This uses the objects stored in session state instead of resetting on every rerun.")
 
 if st.button("Generate schedule"):
-    scheduler = Scheduler(owner)
     st.session_state.generated_plan = scheduler.generate_daily_plan()
     st.session_state.plan_explanation = scheduler.explain_plan()
 
@@ -210,6 +249,7 @@ if st.session_state.generated_plan:
                 "category": task.category,
                 "duration": task.duration,
                 "time": task.time,
+                "due_date": task.due_date.isoformat(),
                 "priority": task.priority,
                 "frequency": task.frequency,
                 "required": task.required,
