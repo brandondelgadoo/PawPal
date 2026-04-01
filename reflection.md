@@ -44,7 +44,12 @@
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
+
+    One tradeoff my scheduler makes is that its conflict detection only checks for exact matching dates and times instead of calculating whether two task durations overlap. For example, it will warn me if two tasks are both scheduled at 8:30 AM, but it will not yet detect that a task from 8:00 to 8:30 could overlap with a task starting at 8:15.
+
 - Why is that tradeoff reasonable for this scenario?
+
+    That tradeoff is reasonable for this version of the project because it keeps the logic lightweight and easy to understand while still catching the most obvious scheduling mistakes. Since this is an early pet care planner and not a full calendar system, exact-time conflict warnings provide useful feedback without adding too much complexity to the code.
 
 ---
 
