@@ -57,6 +57,52 @@ def test_mark_task_complete_creates_next_daily_occurrence() -> None:
     assert next_task.completed is False
 
 
+def test_sort_by_time_returns_tasks_in_chronological_order() -> None:
+    owner = Owner(name="Jordan", available_time=60)
+    pet = Pet(name="Mochi", species="dog", age=4)
+
+    pet.add_task(
+        CareTask(
+            title="Evening walk",
+            category="exercise",
+            duration=20,
+            time="18:00",
+            priority="medium",
+            frequency="daily",
+            due_date=date.today(),
+        )
+    )
+    pet.add_task(
+        CareTask(
+            title="Breakfast",
+            category="feeding",
+            duration=10,
+            time="07:30",
+            priority="high",
+            frequency="daily",
+            due_date=date.today(),
+        )
+    )
+    pet.add_task(
+        CareTask(
+            title="Lunch check-in",
+            category="care",
+            duration=5,
+            time="12:00",
+            priority="low",
+            frequency="daily",
+            due_date=date.today(),
+        )
+    )
+
+    owner.add_pet(pet)
+    scheduler = Scheduler(owner)
+
+    sorted_tasks = scheduler.sort_by_time()
+
+    assert [task.time for task in sorted_tasks] == ["07:30", "12:00", "18:00"]
+
+
 def test_detect_conflicts_returns_warning_for_same_time_tasks() -> None:
     owner = Owner(name="Jordan", available_time=60)
     mochi = Pet(name="Mochi", species="dog", age=4)

@@ -32,6 +32,18 @@ PawPal+ now includes a few smarter scheduling features beyond basic task entry:
 - The scheduler detects simple conflicts when two tasks are scheduled for the same date and time.
 - The daily plan still prioritizes required and higher-priority tasks while staying within the owner's available time.
 
+## Testing PawPal+
+
+Run the automated tests with:
+
+```bash
+python -m pytest
+```
+
+The current test suite checks core scheduler behavior, including task completion, adding tasks to pets, sorting tasks into chronological order, creating the next occurrence for daily recurring tasks, and detecting conflicts when two tasks share the same scheduled time.
+
+Confidence Level: ★★★★☆ (4/5)
+
 ## Getting started
 
 ### Setup
