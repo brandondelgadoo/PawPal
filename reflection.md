@@ -6,7 +6,7 @@
 
 - Briefly describe your initial UML design.
 
-    My initial UML design focused on the main things a pet owner needs to do in PawPal+. First, the user should be able to enter and manage owner and pet information so the app knows who the plan is for and what kinds of care matter. Second, the user should be able to add and update pet care tasks such as walks, feeding, medication, grooming, or enrichment, including how long each task takes and how important it is. Third, the user should be able to generate and review a daily plan that selects the most important tasks based on available time, priorities, and preferences, and explains why those tasks were chosen.
+    My initial UML design used four classes to represent the main parts of the PawPal+ pet care app: `Owner`, `Pet`, `CareTask`, and `Scheduler`. I chose these classes because they map directly to the problem the app is solving. The `Owner` class represents the person using the app and stores their available time and preferences. The `Pet` class represents the animal receiving care and stores profile information like species, age, and special needs. The `CareTask` class represents each activity that might need to be scheduled, such as a walk, feeding, medication, or grooming, along with details like duration, priority, and frequency. The `Scheduler` class is responsible for the planning logic, using the owner, pets, and tasks to decide what should go into the daily plan.
 
 - What classes did you include, and what responsibilities did you assign to each?
 
@@ -25,7 +25,12 @@
 **b. Design changes**
 
 - Did your design change during implementation?
+
+    Not significantly. My initial design stayed mostly the same as I moved from the UML diagram to the Python class skeleton.
+
 - If yes, describe at least one change and why you made it.
+
+    I did not make any major design changes during implementation. The main adjustment was making the class relationships more explicit in code so the skeleton matched the UML more clearly.
 
 ---
 
